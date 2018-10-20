@@ -30,7 +30,15 @@ router.delete('/:id/delete', async (req, res) => {
   res.status(200).send();
 });
 // UPDATE POSTS
-
+router.put('/:id/update', async (req, res) => {
+  const posts = await loadPostsCollection();
+  await posts.updateOne(
+    { _id: new mongodb.ObjectID(req.params.id) },
+    { $set: { text: req.body.text } }
+    // text: req.body.text
+  );
+  res.status(200).send();
+});
 // function for mlab load posts and use em and use methods on em n shit
 async function loadPostsCollection() {
   const client = await mongodb.MongoClient.connect(
